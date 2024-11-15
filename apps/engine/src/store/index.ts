@@ -396,7 +396,7 @@ public buyOrder(userData:{clientId:string, userId:string, stockSymbol:string, qu
                             let sellerQuantity = order.quantity;
                             const sellerPrice = price;
                             if(!(totalQuantity<userData.quantity)){
-                                break;
+                                return;
                             }
                             
                             if (!order.complementory) {
