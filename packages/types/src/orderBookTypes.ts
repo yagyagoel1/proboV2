@@ -11,7 +11,7 @@ export interface PriceLevel{
 interface TokenType{
     [price:string]:PriceLevel;
 }
-interface Symbol{
+export interface Symbol{
     yes:TokenType,
     no:TokenType,
 }

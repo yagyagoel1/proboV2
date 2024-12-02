@@ -7,7 +7,7 @@ export class engineHandler{
           locked: 0,
         },
       };
-      private  OrderBook: OrderBook = {};
+      public  OrderBook: OrderBook = {};
       private Stock_Balance: stockBalance = {
         user5: {
             "BTC": {
