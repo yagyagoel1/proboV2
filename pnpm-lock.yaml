@@ -118,9 +118,6 @@ importers:
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
-      uuid:
-        specifier: ^11.0.2
-        version: 11.0.2
       ws:
         specifier: ^8.18.0
         version: 8.18.0
@@ -131,9 +128,6 @@ importers:
       '@types/jsonwebtoken':
         specifier: ^9.0.7
         version: 9.0.7
-      '@types/uuid':
-        specifier: ^10.0.0
-        version: 10.0.0
       '@types/ws':
         specifier: ^8.5.13
         version: 8.5.13

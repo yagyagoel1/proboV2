@@ -41,4 +41,4 @@ async function publishMessage(channel: string, message: string): Promise<void> {
 
 setInterval(() => {
     publishMessage(process.env.WEBSOCKETCHANNEL||"",JSON.stringify( engineHandler.getInstance().OrderBook)).catch((err) => console.error(err));
-}, 5000);
+}, 2000);

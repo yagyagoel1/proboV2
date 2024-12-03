@@ -1,5 +1,6 @@
 import { OrderBook, PriceLevel, responseType, stockBalance, userBalanceType } from '@repo/types';
 import { redisHandler } from '../redisHandler';
+import { snapshooter } from '../utils/snapshooter';
 export class engineHandler{
     private InrBalances:userBalanceType= {
         user5: {
@@ -85,6 +86,7 @@ public createUser(userData:{clientId:string, userId:string}){
             locked: 0,
         }
         this.InrBalances[userData.userId] = initialBalance;
+
         const data= {type:"createUser", data:{username:userData.userId}};
         redisHandler.getInstance().pushToDB(data);
         redisHandler.getInstance().pushToApi(userData.clientId, {
@@ -94,6 +96,8 @@ public createUser(userData:{clientId:string, userId:string}){
                 userBalance: this.InrBalances[userData.userId],
             },
         });
+        snapshooter(this.InrBalances,"userbalance")
+        snapshooter(this.Stock_Balance,"stockbalance")
     }catch(err){
         console.error(err)
         throw new Error("error wjile creating user");
@@ -173,6 +177,9 @@ public resetData(userData:{clientId:string}){
             clientId: userData.clientId,
             responseData: "Data reset successfully",
         });
+        snapshooter(this.InrBalances,"userbalance")
+        snapshooter(this.Stock_Balance,"stockbalance")
+        snapshooter(this.OrderBook,"orderbook")
     }catch(err){
         console.error(err)
         throw new Error("error wjile resetting data");
@@ -206,6 +213,7 @@ public onrampMoney(userData:{clientId:string, userId:string, amount:number}){
                     balance: this.InrBalances[userData.userId],
                 }
             });
+            snapshooter(this.InrBalances,"userbalance")
         }catch(err){
             console.error(err)
             throw new Error("error wjile onramping money");
@@ -233,6 +241,7 @@ try{
             responseData: {message:`Stock ${userData.stockSymbol} created successfully`,
             orderBook: this.OrderBook[userData.stockSymbol],}
         });
+        snapshooter(this.OrderBook,"orderbook")
     }catch(err){
         console.error(err)
         redisHandler.getInstance().pushToApi(userData.clientId, {
@@ -285,7 +294,8 @@ public tradeMint(userData:{clientId:string, userId:string, stockSymbol:string, q
         clientId: userData.clientId,
         responseData: "Trade minted successfully",
       });
-     
+      snapshooter(this.InrBalances,"userbalance")
+      snapshooter(this.OrderBook,"orderbook")
         
     }catch(err){
         console.error(err)
@@ -338,7 +348,8 @@ public sellOrder(userData:{clientId:string, userId:string, stockSymbol:string, q
             clientId: userData.clientId,
             responseData: "Sell order placed successfully",
           });
-
+          snapshooter(this.OrderBook,"orderbook")
+        snapshooter(this.Stock_Balance,"stockbalance")
     }catch(err){
         console.error(err)
         redisHandler.getInstance().pushToApi(userData.clientId, {
@@ -498,7 +509,9 @@ public buyOrder(userData:{clientId:string, userId:string, stockSymbol:string, qu
             clientId: userData.clientId,
             responseData: "Buy order executed successfully",
           });
-
+          snapshooter(this.InrBalances,"userbalance")
+        snapshooter(this.Stock_Balance,"stockbalance")
+        snapshooter(this.OrderBook,"orderbook")
     }catch(err){
         console.error(err)
         redisHandler.getInstance().pushToApi(userData.clientId, {
