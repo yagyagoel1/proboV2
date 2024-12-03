@@ -26,13 +26,10 @@ async function subscribeToChannel(channel: string): Promise<void> {
             } else {
                 user.websocket.send(JSON.stringify({ type: "OrderbookDoesNotExist", data: null }));
                 delete subscribedChart.user[userId];            
-            }
-        };
+            }};
         }
-            
-        })
-        }
+    })
+}
 
 
-// Example: Subscribe to a channel
-subscribeToChannel('my-channel');
+subscribeToChannel(process.env.CHANNEL||"");
